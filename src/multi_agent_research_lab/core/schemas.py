@@ -1,9 +1,18 @@
 """Public schemas exchanged between CLI, agents, and evaluators."""
 
-from enum import StrEnum
+import sys
 from typing import Any
 
 from pydantic import BaseModel, Field
+
+# StrEnum was added in Python 3.11; backport for 3.10
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    from enum import Enum
+
+    class StrEnum(str, Enum):  # type: ignore[no-redef]
+        """Minimal StrEnum backport for Python < 3.11."""
 
 
 class AgentName(StrEnum):
